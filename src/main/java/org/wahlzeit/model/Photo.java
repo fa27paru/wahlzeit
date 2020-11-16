@@ -107,6 +107,11 @@ public class Photo extends DataObject {
 	/**
 	 * 
 	 */
+	protected Location location = Location.DEFAULT;
+
+	/**
+	 * 
+	 */
 	public Photo() {
 		id = PhotoId.getNextId();
 		incWriteCount();
@@ -164,6 +169,7 @@ public class Photo extends DataObject {
 		creationTime = rset.getLong("creation_time");
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
+		location = Location.getFromString(rset.getString("location"));
 	}
 	
 	/**
@@ -184,6 +190,7 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);		
+		rset.updateString("location", location.toString());
 	}
 
 	/**
@@ -477,5 +484,21 @@ public class Photo extends DataObject {
 	public long getCreationTime() {
 		return creationTime;
 	}
-	
+
+	/**
+	 * 
+	 * @methodtype set
+	 */
+	public void setLocation(Location newLocation) {
+		location = newLocation;
+		incWriteCount();
+	}
+
+	/**
+	 * 
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return location;
+	}
 }
