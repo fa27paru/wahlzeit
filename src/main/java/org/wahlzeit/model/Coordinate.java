@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import java.util.Objects;
+
 public class Coordinate {
     private final static double EPSILON = 0.0001;
 
@@ -38,10 +40,7 @@ public class Coordinate {
     }
 
     public boolean isEqual(Coordinate other) {
-        if (getDistance(other) <= EPSILON)
-            return true;
-        else
-            return false;
+        return getDistance(other) <= EPSILON;
     }
 
     @Override
@@ -51,6 +50,11 @@ public class Coordinate {
         if (obj == null || getClass() != obj.getClass())
             return false;
         return isEqual((Coordinate) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 
     @Override
