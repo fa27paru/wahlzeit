@@ -30,7 +30,10 @@ CREATE TABLE photos (
 	praise_sum integer,
 	no_votes integer,
 	creation_time bigint,
-	location text
+	location text,
+	serial_killer_name text,
+	serial_killer_proven_victims integer,
+	serial_killer_possible_victims integer
 );
 
 CREATE TABLE tags (
