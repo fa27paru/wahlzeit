@@ -25,6 +25,7 @@ import java.net.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
+import org.wahlzeit.model.location.Location;
 
 /**
  * A photo represents a user-provided (uploaded) photo.

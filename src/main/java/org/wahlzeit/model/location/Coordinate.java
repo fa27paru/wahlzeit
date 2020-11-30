@@ -1,4 +1,4 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.location;
 
 import java.util.Objects;
 

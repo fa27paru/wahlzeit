@@ -1,4 +1,4 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.location;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
