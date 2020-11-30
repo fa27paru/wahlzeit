@@ -7,7 +7,7 @@ public class Location {
 
     public static Location getFromString(String strLocation) throws IllegalArgumentException {
         try {
-            return new Location(Coordinate.getFromString(strLocation));
+            return new Location(CartesianCoordinate.getFromString(strLocation));
         } catch (Exception cause) {
             throw new IllegalArgumentException("invalid Location string: " + strLocation, cause);
         }
@@ -29,6 +29,6 @@ public class Location {
 
     @Override
     public String toString() {
-        return coordinate.toString();
+        return coordinate.asCartesianCoordinate().toString();
     }
 }
