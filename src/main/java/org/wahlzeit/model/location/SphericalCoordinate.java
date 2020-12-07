@@ -1,6 +1,6 @@
 package org.wahlzeit.model.location;
 
-public class SphericalCoordinate implements Coordinate {
+public class SphericalCoordinate extends AbstractCoordinate {
     public double phi;
     public double theta;
     public double radius;
@@ -24,11 +24,6 @@ public class SphericalCoordinate implements Coordinate {
     }
 
     @Override
-    public double getCartesianDistance(Coordinate other) {
-        return asCartesianCoordinate().getCartesianDistance(other);
-    }
-
-    @Override
     public SphericalCoordinate asSphericalCoordinate() {
         return this;
     }
@@ -39,20 +34,5 @@ public class SphericalCoordinate implements Coordinate {
         double phiDiff = Math.abs(phi - otherSpherical.phi);
         double c = Math.sin(theta) * Math.sin(otherSpherical.theta) + Math.cos(theta) * Math.cos(otherSpherical.theta) * Math.cos(phiDiff);
         return Math.acos(c);
-    }
-
-    @Override
-    public boolean isEqual(Coordinate other) {
-        return asCartesianCoordinate().isEqual(other);
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        return asCartesianCoordinate().equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return asCartesianCoordinate().hashCode();
     }
 }

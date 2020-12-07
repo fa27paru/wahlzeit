@@ -2,7 +2,7 @@ package org.wahlzeit.model.location;
 
 import java.util.Objects;
 
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
     private final static double EPSILON = 0.0001;
 
     public double x;
@@ -46,15 +46,6 @@ public class CartesianCoordinate implements Coordinate {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || !(obj instanceof Coordinate))
-            return false;
-        return isEqual((Coordinate) obj);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
     }
@@ -75,10 +66,5 @@ public class CartesianCoordinate implements Coordinate {
         double theta = Math.atan2(Math.sqrt(x * x + y * y), z);
         double phi = Math.atan2(y, x);        
         return new SphericalCoordinate(phi, theta, r);
-    }
-
-    @Override
-    public double getCentralAngle(Coordinate other) {
-        return asSphericalCoordinate().getCentralAngle(other);
     }
 }
