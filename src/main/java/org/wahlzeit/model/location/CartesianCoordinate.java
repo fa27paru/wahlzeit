@@ -34,37 +34,63 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCartesianDistance(Coordinate other) {
+        assertClassInvariants();
+        assertNotNullArgument(other);
+
         CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
         double xDiff = otherCartesian.x - x;
         double yDiff = otherCartesian.y - y;
         double zDiff = otherCartesian.z - z;
-        return Math.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
+        double result = Math.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
+
+        assertResultNotNan(result);
+        return result;
     }
 
     public boolean isEqual(Coordinate other) {
+        assertClassInvariants();
+        assertNotNullArgument(other);
+
         return getCartesianDistance(other) <= EPSILON;
     }
 
     @Override
     public int hashCode() {
+        assertClassInvariants();
+
         return Objects.hash(x, y, z);
     }
 
     @Override
     public String toString() {
+        assertClassInvariants();
+
         return Double.toString(x) + ";" + Double.toString(y) + ";" + Double.toString(z) + ";";
     }
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
+
         return this;
     }
 
     @Override
     public SphericalCoordinate asSphericalCoordinate() {
+        assertClassInvariants();
+
         double r = Math.sqrt(x * x + y * y + z * z);
         double theta = Math.atan2(Math.sqrt(x * x + y * y), z);
         double phi = Math.atan2(y, x);        
-        return new SphericalCoordinate(phi, theta, r);
+        SphericalCoordinate result = new SphericalCoordinate(phi, theta, r);
+
+        result.assertClassInvariants();
+        return result;
+    }
+
+    @Override
+    protected void assertClassInvariants() {
+        if(Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) throw new IllegalStateException("Cartesian coordinates can not be Nan");
+        super.assertClassInvariants();
     }
 }

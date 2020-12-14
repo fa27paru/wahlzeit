@@ -3,52 +3,106 @@ package org.wahlzeit.model.location;
 public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public double getCartesianDistance(Coordinate other) {
-        return asCartesianCoordinate().getCartesianDistance(other);
+        assertClassInvariants();
+        assertNotNullArgument(other);
+
+        double result = asCartesianCoordinate().getCartesianDistance(other);
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public double getCentralAngle(Coordinate other) {
-        return asSphericalCoordinate().getCentralAngle(other);
+        assertClassInvariants();
+        assertNotNullArgument(other);
+
+        double result = asSphericalCoordinate().getCentralAngle(other);
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public boolean isEqual(Coordinate other) {
-        return asCartesianCoordinate().isEqual(other);
+        assertClassInvariants();
+        assertNotNullArgument(other);
+
+        boolean result = asCartesianCoordinate().isEqual(other);
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
+        assertClassInvariants();
+
+        boolean result;
         if (this == obj)
-            return true;
-        if (obj == null || !(obj instanceof Coordinate))
-            return false;
-        return isEqual((Coordinate) obj);
+            result = true;
+        else if (obj == null || !(obj instanceof Coordinate))
+            result = false;
+        else
+            result = isEqual((Coordinate) obj);
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public int hashCode() {
-        return asCartesianCoordinate().hashCode();
+        assertClassInvariants();
+
+        int result = asCartesianCoordinate().hashCode();
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        try {
-            if (!getClass().getMethod("asSphericalCoordinate").getDeclaringClass().equals(getClass()))
-                throw new Exception("neither asCartesianCoordinate nor asSphericalCoordinate is not implemented");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return asSphericalCoordinate().asCartesianCoordinate();
+        assertClassInvariants();
+        assertConversionImplemented();
+
+        CartesianCoordinate result = asSphericalCoordinate().asCartesianCoordinate();
+
+        assertClassInvariants();
+        return result;
     }
 
     @Override
     public SphericalCoordinate asSphericalCoordinate() {
+        assertClassInvariants();
+        assertConversionImplemented();
+
+        SphericalCoordinate result = asCartesianCoordinate().asSphericalCoordinate();
+
+        assertClassInvariants();
+        return result;
+    }
+
+    protected void assertClassInvariants() {
+    }
+
+    protected void assertConversionImplemented() {
         try {
-            if (!getClass().getMethod("asCartesianCoordinate").getDeclaringClass().equals(getClass()))
-                throw new Exception("neither asCartesianCoordinate nor asSphericalCoordinate is not implemented");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            if (!getClass().getMethod("asCartesianCoordinate").getDeclaringClass().equals(getClass())
+                    && !getClass().getMethod("asSphericalCoordinate").getDeclaringClass().equals(getClass()))
+                throw new NoSuchMethodException(
+                        "neither asCartesianCoordinate nor asSphericalCoordinate is implemented");
+        } catch (NoSuchMethodException e) {
+            throw new UnsupportedOperationException(e);
         }
-        return asCartesianCoordinate().asSphericalCoordinate();
+    }
+
+    protected void assertNotNullArgument(Object obj) {
+        if (obj == null)
+            throw new NullPointerException("The provided argument was null");
+    }
+
+    protected void assertResultNotNan(double value) {
+        if (Double.isNaN(value))
+            throw new RuntimeException("the result is Nan");
     }
 }
