@@ -3,6 +3,8 @@ package org.wahlzeit.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.wahlzeit.utils.conditions.Preconditions;
+
 public class SerialKillerPhotoFactory extends PhotoFactory {
     @Override
     public Photo createPhoto() {
@@ -16,6 +18,8 @@ public class SerialKillerPhotoFactory extends PhotoFactory {
 
     @Override
     public Photo createPhoto(ResultSet rs) throws SQLException {
+        Preconditions.assertNotNullArgument(rs);
+
         return new SerialKillerPhoto(rs);
     }
 }
