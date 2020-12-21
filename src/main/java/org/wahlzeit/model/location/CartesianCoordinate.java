@@ -2,12 +2,15 @@ package org.wahlzeit.model.location;
 
 import java.util.Objects;
 
+import org.wahlzeit.utils.conditions.Preconditions;
+import org.wahlzeit.utils.conditions.Postconditions;
+
 public class CartesianCoordinate extends AbstractCoordinate {
     private final static double EPSILON = 0.0001;
 
-    public double x;
-    public double y;
-    public double z;
+    protected double x;
+    protected double y;
+    protected double z;
 
     public static CartesianCoordinate getFromString(String strCoordinate) throws IllegalArgumentException {
         if (strCoordinate == null || strCoordinate.trim().isEmpty())
@@ -23,19 +26,27 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate(double x, double y, double z) {
+        Preconditions.assertArgumentNotNan(x);
+        Preconditions.assertArgumentNotNan(y);
+        Preconditions.assertArgumentNotNan(z);
+
         this.x = x;
         this.y = y;
         this.z = z;
+
+        assertClassInvariants();
     }
 
     public CartesianCoordinate() {
         this(0, 0, 0);
+
+        assertClassInvariants();
     }
 
     @Override
     public double getCartesianDistance(Coordinate other) {
         assertClassInvariants();
-        assertNotNullArgument(other);
+        Preconditions.assertNotNullArgument(other);
 
         CartesianCoordinate otherCartesian = other.asCartesianCoordinate();
         double xDiff = otherCartesian.x - x;
@@ -43,13 +54,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
         double zDiff = otherCartesian.z - z;
         double result = Math.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
 
-        assertResultNotNan(result);
+        Postconditions.assertResultNotNan(result);
+        Postconditions.assertNonNegativeResult(result);
         return result;
     }
 
     public boolean isEqual(Coordinate other) {
         assertClassInvariants();
-        assertNotNullArgument(other);
+        Preconditions.assertNotNullArgument(other);
 
         return getCartesianDistance(other) <= EPSILON;
     }
@@ -81,16 +93,58 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         double r = Math.sqrt(x * x + y * y + z * z);
         double theta = Math.atan2(Math.sqrt(x * x + y * y), z);
-        double phi = Math.atan2(y, x);        
+        double phi = Math.atan2(y, x);
         SphericalCoordinate result = new SphericalCoordinate(phi, theta, r);
 
-        result.assertClassInvariants();
         return result;
     }
 
     @Override
     protected void assertClassInvariants() {
-        if(Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) throw new IllegalStateException("Cartesian coordinates can not be Nan");
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z))
+            throw new IllegalStateException("cartesian coordinates can not be Nan");
         super.assertClassInvariants();
+    }
+
+    public double getX() {
+        assertClassInvariants();
+
+        return x;
+    }
+
+    public void setX(double x) {
+        Preconditions.assertArgumentNotNan(x);
+
+        this.x = x;
+
+        assertClassInvariants();
+    }
+
+    public double getY() {
+        assertClassInvariants();
+
+        return y;
+    }
+
+    public void setY(double y) {
+        Preconditions.assertArgumentNotNan(y);
+
+        this.y = y;
+
+        assertClassInvariants();
+    }
+
+    public double getZ() {
+        assertClassInvariants();
+
+        return z;
+    }
+
+    public void setZ(double z) {
+        Preconditions.assertArgumentNotNan(z);
+
+        this.z = z;
+
+        assertClassInvariants();
     }
 }

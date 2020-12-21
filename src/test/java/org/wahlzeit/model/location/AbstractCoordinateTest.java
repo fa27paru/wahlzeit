@@ -9,13 +9,13 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 public class AbstractCoordinateTest extends AbstractCoordinate {
-    @Test(expected = RuntimeException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void testAsCartesianCoordinateNoImplementation() {
         Coordinate coord = new AbstractCoordinateTest();
         coord.asCartesianCoordinate();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void testAsSphericalCoordinateNoImplementation() {
         Coordinate coord = new AbstractCoordinateTest();
         coord.asSphericalCoordinate();
@@ -73,5 +73,23 @@ public class AbstractCoordinateTest extends AbstractCoordinate {
     public void testEqualsWithNoCoordinateClass() {
         Coordinate coord = new AbstractCoordinateTest();
         assertFalse(coord.equals(new Object()));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetCartesianDistanceNullArgument() {
+        Coordinate coord = new AbstractCoordinateTest();
+        coord.getCartesianDistance(null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetCentralAngleNullArgument() {
+        Coordinate coord = new AbstractCoordinateTest();
+        coord.getCentralAngle(null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsEqualNullArgument() {
+        Coordinate coord = new AbstractCoordinateTest();
+        coord.isEqual(null);
     }
 }

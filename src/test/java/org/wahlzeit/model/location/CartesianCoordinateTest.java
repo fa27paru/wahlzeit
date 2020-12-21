@@ -113,4 +113,44 @@ public class CartesianCoordinateTest {
         assertEquals(sCoord2, sCoord3);
         assertNotEquals(coord1, sCoord2);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorWithNanValue() {
+        new CartesianCoordinate(0, Double.NaN, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDistanceNullArgument() {
+        CartesianCoordinate coord = new CartesianCoordinate();
+
+        coord.getCartesianDistance(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsEqualNullArgument() {
+        CartesianCoordinate coord = new CartesianCoordinate();
+
+        coord.isEqual(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetXNanArgument() {
+        CartesianCoordinate coord = new CartesianCoordinate();
+
+        coord.setX(Double.NaN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetYNanArgument() {
+        CartesianCoordinate coord = new CartesianCoordinate();
+
+        coord.setY(Double.NaN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetZNanArgument() {
+        CartesianCoordinate coord = new CartesianCoordinate();
+
+        coord.setZ(Double.NaN);
+    }
 }

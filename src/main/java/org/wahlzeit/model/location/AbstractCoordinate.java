@@ -1,10 +1,12 @@
 package org.wahlzeit.model.location;
 
+import org.wahlzeit.utils.conditions.Preconditions;
+
 public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public double getCartesianDistance(Coordinate other) {
         assertClassInvariants();
-        assertNotNullArgument(other);
+        Preconditions.assertNotNullArgument(other);
 
         double result = asCartesianCoordinate().getCartesianDistance(other);
 
@@ -15,7 +17,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public double getCentralAngle(Coordinate other) {
         assertClassInvariants();
-        assertNotNullArgument(other);
+        Preconditions.assertNotNullArgument(other);
 
         double result = asSphericalCoordinate().getCentralAngle(other);
 
@@ -26,7 +28,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public boolean isEqual(Coordinate other) {
         assertClassInvariants();
-        assertNotNullArgument(other);
+        Preconditions.assertNotNullArgument(other);
 
         boolean result = asCartesianCoordinate().isEqual(other);
 
@@ -94,15 +96,5 @@ public abstract class AbstractCoordinate implements Coordinate {
         } catch (NoSuchMethodException e) {
             throw new UnsupportedOperationException(e);
         }
-    }
-
-    protected void assertNotNullArgument(Object obj) {
-        if (obj == null)
-            throw new NullPointerException("The provided argument was null");
-    }
-
-    protected void assertResultNotNan(double value) {
-        if (Double.isNaN(value))
-            throw new RuntimeException("the result is Nan");
     }
 }
