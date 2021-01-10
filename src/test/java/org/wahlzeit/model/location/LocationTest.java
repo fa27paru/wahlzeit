@@ -23,7 +23,7 @@ public class LocationTest {
 
     @Test
     public void testGetFromString() {
-        Coordinate expectedCoord = new CartesianCoordinate(1.0, 2.2, 3.2);
+        Coordinate expectedCoord = CartesianCoordinate.getCartesianCoordinate(1.0, 2.2, 3.2);
 
         Location loc = Location.getFromString("1.0;2.2;3.2;");
         Coordinate actualCoordinate = loc.getCoordinate();
@@ -35,7 +35,7 @@ public class LocationTest {
 
     @Test
     public void testGetFromStringWithEmptyString() {
-        Coordinate expectedCoord = new CartesianCoordinate();
+        Coordinate expectedCoord = CartesianCoordinate.getCartesianCoordinate();
 
         Location loc = Location.getFromString("");
         Coordinate actualCoordinate = loc.getCoordinate();

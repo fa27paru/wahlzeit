@@ -45,6 +45,8 @@ public abstract class AbstractCoordinate implements Coordinate {
             result = true;
         else if (obj == null || !(obj instanceof Coordinate))
             result = false;
+        else if (((Coordinate)obj).asCartesianCoordinate() == asCartesianCoordinate())
+            result = true;
         else
             result = isEqual((Coordinate) obj);
 

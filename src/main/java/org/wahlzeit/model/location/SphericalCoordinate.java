@@ -1,14 +1,38 @@
 package org.wahlzeit.model.location;
 
 import org.wahlzeit.utils.conditions.Preconditions;
+
+import java.util.HashMap;
+
 import org.wahlzeit.utils.conditions.Postconditions;
 
 public class SphericalCoordinate extends AbstractCoordinate {
-    protected double phi;
-    protected double theta;
-    protected double radius;
+    protected static HashMap<Integer, SphericalCoordinate> sharedSphericalCoordinates = new HashMap<>();
 
-    public SphericalCoordinate(double phi, double theta, double radius) {
+    protected final double phi;
+    protected final double theta;
+    protected final double radius;
+
+    public static SphericalCoordinate getSphericalCoordinate() {
+        return getSphericalCoordinate(0, 0, 0);
+    }
+
+    public static SphericalCoordinate getSphericalCoordinate(double phi, double theta, double radius) {
+        SphericalCoordinate newCoordinate = new SphericalCoordinate(phi, theta, radius);
+        SphericalCoordinate result = sharedSphericalCoordinates.get(newCoordinate.hashCode());
+        if (result == null) {
+            synchronized (sharedSphericalCoordinates) {
+                result = sharedSphericalCoordinates.get(newCoordinate.hashCode());
+                if (result == null) {
+                    sharedSphericalCoordinates.put(newCoordinate.hashCode(), newCoordinate);
+                    result = newCoordinate;
+                }
+            }
+        }
+        return result;   
+    }
+
+    protected SphericalCoordinate(double phi, double theta, double radius) {
         Preconditions.assertArgumentNotNan(phi);
         Preconditions.assertArgumentNotNan(theta);
         Preconditions.assertArgumentNotNan(radius);
@@ -23,12 +47,6 @@ public class SphericalCoordinate extends AbstractCoordinate {
         assertClassInvariants();
     }
 
-    public SphericalCoordinate() {
-        this(0, 0, 0);
-
-        assertClassInvariants();
-    }
-
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         assertClassInvariants();
@@ -36,7 +54,7 @@ public class SphericalCoordinate extends AbstractCoordinate {
         double x = radius * Math.sin(theta) * Math.cos(phi);
         double y = radius * Math.sin(theta) * Math.sin(phi);
         double z = radius * Math.cos(theta);
-        CartesianCoordinate result = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate result = CartesianCoordinate.getCartesianCoordinate(x, y, z);
 
         return result;
     }
@@ -89,13 +107,11 @@ public class SphericalCoordinate extends AbstractCoordinate {
         return result;
     }
 
-    public void setPhi(double phi) {
+    public SphericalCoordinate setPhi(double phi) {
         Preconditions.assertArgumentNotNan(phi);
         Preconditions.assertArgumentWithinRange(phi, 0, Math.PI, "phi must be greater or equal 0 and smaller than pi");
         
-        this.phi = phi;
-        
-        assertClassInvariants();
+        return getSphericalCoordinate(phi, theta, radius);
     }
     
     public double getTheta() {
@@ -108,13 +124,11 @@ public class SphericalCoordinate extends AbstractCoordinate {
         return result;
     }
 
-    public void setTheta(double theta) {
+    public SphericalCoordinate setTheta(double theta) {
         Preconditions.assertArgumentNotNan(theta);
         Preconditions.assertArgumentWithinRange(theta, 0, Math.PI, "theta must be greater or equal 0 and smaller than pi");
 
-        this.theta = theta;
-
-        assertClassInvariants();
+        return getSphericalCoordinate(phi, theta, radius);
     }
 
     public double getRadius() {
@@ -127,12 +141,10 @@ public class SphericalCoordinate extends AbstractCoordinate {
         return result;
     }
 
-    public void setRadius(double radius) {
+    public SphericalCoordinate setRadius(double radius) {
         Preconditions.assertArgumentNotNan(radius);
         Preconditions.assertNonNegativeArgument(radius, "the radius must not be negative");
 
-        this.radius = radius;
-
-        assertClassInvariants();
+        return getSphericalCoordinate(phi, theta, radius);
     }
 }
