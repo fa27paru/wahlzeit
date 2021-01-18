@@ -4,8 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.wahlzeit.services.SysLog;
+import org.wahlzeit.utils.PatternInstance;
 import org.wahlzeit.utils.conditions.Preconditions;
 
+@PatternInstance(
+	patternName = "Abstract Factory",
+	participants = {
+		"ConcreteProduct"
+	}
+)
 public class SerialKillerPhoto extends Photo {
     protected String serialKillerName = "unknown";
     protected int provenVictims = 0;

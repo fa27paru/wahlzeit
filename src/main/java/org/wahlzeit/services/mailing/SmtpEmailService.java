@@ -20,15 +20,32 @@
 
 package org.wahlzeit.services.mailing;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.utils.PatternInstance;
 
 /**
  * 
  */
+@PatternInstance(
+	patternName = "Decorator",
+	participants = {
+		"ConcreteComponent"
+	}
+)
 public class SmtpEmailService extends AbstractEmailService {
 	
 	/**
