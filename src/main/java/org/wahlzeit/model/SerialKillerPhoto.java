@@ -2,7 +2,6 @@ package org.wahlzeit.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 import org.wahlzeit.utils.PatternInstance;
 import org.wahlzeit.utils.conditions.Preconditions;
@@ -14,7 +13,7 @@ import org.wahlzeit.utils.conditions.Preconditions;
 	}
 )
 public class SerialKillerPhoto extends Photo {
-    protected SerialKiller serialKiller = new SerialKiller(SerialKillerType.getSerialKillerType("SerialKillerType", new HashMap<>(), null));;
+    protected SerialKiller serialKiller = SerialKillerManager.getInstance().createSerialKiller();
 
     public SerialKillerPhoto() {
         super();

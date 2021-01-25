@@ -34,6 +34,10 @@ public class SerialKillerManager {
         }
     }
 
+    public SerialKiller createSerialKiller() {
+        return new SerialKiller(SerialKillerType.getSerialKillerType("SerialKillerType", new HashMap<>(), null));
+    }
+
     public SerialKiller createSerialKiller(ResultSet rset) {
         Preconditions.assertNotNullArgument(rset);
 
