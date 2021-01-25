@@ -33,7 +33,8 @@ CREATE TABLE photos (
 	location text,
 	serial_killer_name text,
 	serial_killer_proven_victims integer,
-	serial_killer_possible_victims integer
+	serial_killer_possible_victims integer,
+	serial_killer_type text
 );
 
 CREATE TABLE tags (
