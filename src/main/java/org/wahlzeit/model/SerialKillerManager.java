@@ -16,7 +16,7 @@ public class SerialKillerManager {
 
         try {
             SerialKillerType superType = null;
-            String superTypeBaseName = rset.getString(baseName + "superType");
+            String superTypeBaseName = rset.getString(baseName + "_superType");
             if(superTypeBaseName != null && !superTypeBaseName.isEmpty()) superType = getSerialKillerType(rset, superTypeBaseName);
             ResultSetMetaData rsmd = rset.getMetaData();
             int columnCount = rsmd.getColumnCount();
@@ -61,8 +61,8 @@ public class SerialKillerManager {
         Preconditions.assertNotNullArgument(serialKillerType);
         try {
             if(serialKillerType.superType != null) saveSerialKillerType(rset, serialKillerType.superType);
-            if(serialKillerType.superType != null) rset.updateString(serialKillerType.name + "superType", serialKillerType.superType.name);
-            else rset.updateString(serialKillerType.name + "superType", "");
+            if(serialKillerType.superType != null) rset.updateString(serialKillerType.name + "_superType", serialKillerType.superType.name);
+            else rset.updateString(serialKillerType.name + "_superType", "");
             for (HashMap.Entry<String,String> attribute : serialKillerType.attributes.entrySet()) {
                 rset.updateString(serialKillerType.name + "_" + attribute.getKey(), attribute.getValue());                
             }
